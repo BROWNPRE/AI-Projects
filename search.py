@@ -76,7 +76,7 @@ def depthFirstSearch(problem):
     # Tracks all of the visited states
     return depthFirstSearchHelper(problem, problem.getStartState(), list(), set(), None)
 
-# A helper method that recursively runs DFS and returns a successful path is one is found, otherwise
+# A helper method that recursively runs DFS and returns a successful path if one is found, otherwise
 # None will be returned.
 def depthFirstSearchHelper(problem, state, path, visited, action):
     # Ignore visited states
