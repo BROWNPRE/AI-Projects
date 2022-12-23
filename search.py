@@ -76,7 +76,7 @@ def depthFirstSearch(problem):
     # Tracks all of the visited states
     return depthFirstSearchHelper(problem, problem.getStartState(), list(), set(), None)
 
-# A helper method that recursively runs DFS and returns a successful path if one is found, otherwise
+# A helper method that recursively runs DFS and returns a successful path is one is found, otherwise
 # None will be returned.
 def depthFirstSearchHelper(problem, state, path, visited, action):
     # Ignore visited states
@@ -186,10 +186,10 @@ def aStarSearch(problem, heuristic=nullHeuristic):
     """Search the node that has the lowest combined cost and heuristic first."""
     "*** YOUR CODE HERE ***"
     # Tracks all of the visited states
-    visited = set()
+    visited = dict()
     queue = util.PriorityQueue()
     # Push start state
-    queue.push(((problem.getStartState(), None, None), list()), 0)
+    queue.push((problem.getStartState(), list()), 0)
     # Queue contains (successor, path, dist_from_start) tuples
 
     # Loop through queue until you find a goal state
@@ -197,22 +197,18 @@ def aStarSearch(problem, heuristic=nullHeuristic):
         popped = queue.pop()
         curState = popped[0]
         path = popped[1]
-        # Ensure it isn't visited
-        if curState[0] in visited:
-            continue
-        # Mark as visited
-        visited.add(curState[0])
         # Return path if it's a goal state
-        if problem.isGoalState(curState[0]):
+        if problem.isGoalState(curState):
             return path
 
+        visited[curState] = path
         # Add successors to queue
-        for next in problem.getSuccessors(curState[0]):
-            if next[0] not in visited:
-                nextPath = path.copy()
-                nextPath.append(next[1])
-                fCost = problem.getCostOfActions(nextPath) + heuristic(next[0], problem)
-                queue.push((next, nextPath), fCost)
+        for next in problem.getSuccessors(curState):
+            if next[0] not in visited.keys():
+                newPath = path.copy()
+                newPath.append(next[1])
+                fCost = problem.getCostOfActions(newPath) + heuristic(next[0], problem)
+                queue.push((next[0], newPath), fCost)
 
     # Reached if the goal is unreachable from curState
     return None
